@@ -9,9 +9,12 @@ pipeline {
             }
         }
 
-        stage('Stop Old Container') {
+        stage('Clean Old Containers') {
             steps {
-                sh 'docker rm -f nodeapp || true'
+                sh '''
+                docker rm -f nodeapp || true
+                docker ps -q --filter "publish=3000" | xargs -r docker rm -f
+                '''
             }
         }
 
