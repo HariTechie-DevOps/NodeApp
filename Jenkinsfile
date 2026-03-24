@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/niinpatel/nodejs-image-upload.git'
+                git branch: 'main', url: 'https://github.com/HariTechie-DevOps/NodeApp.git'
             }
         }
 
