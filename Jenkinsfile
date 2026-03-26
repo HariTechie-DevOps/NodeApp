@@ -1,20 +1,17 @@
 pipeline {
-    agent any
+    agent { label 'docker' }
 
     stages {
 
         stage('Clone Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/HariTechie-DevOps/NodeApp.git'
+                git 'https://github.com/HariTechie-DevOps/NodeApp.git'
             }
         }
 
-        stage('Clean Old Containers') {
+        stage('Cleanup Old Container') {
             steps {
-                sh '''
-                docker rm -f nodeapp || true
-                docker ps -q --filter "publish=3000" | xargs -r docker rm -f
-                '''
+                sh 'docker rm -f nodeapp || true'
             }
         }
 
@@ -30,10 +27,5 @@ pipeline {
             }
         }
 
-        stage('Verify') {
-            steps {
-                sh 'docker ps'
-            }
-        }
     }
 }
