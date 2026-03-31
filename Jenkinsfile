@@ -1,29 +1,20 @@
 pipeline {
-    agent { label 'docker-agent' }
+    agent any
 
     stages {
 
-        stage('Clone Code') {
+        stage('Build') {
             steps {
-                git branch: 'main', url: 'https://github.com/HariTechie-DevOps/NodeApp.git'
+                sh 'docker build -t nodeapp:${BRANCH_NAME} .'
             }
         }
 
-        stage('Cleanup Old Container') {
+        stage('Deploy') {
             steps {
-                sh 'docker rm -f nodeapp || true'
-            }
-        }
-
-        stage('Build Image') {
-            steps {
-                sh 'docker build -t nodeapp .'
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                sh 'docker run -d -p 3000:3000 --name nodeapp nodeapp'
+                sh '''
+                docker rm -f nodeapp || true
+                docker run -d -p 3000:3000 --name nodeapp nodeapp:${BRANCH_NAME}
+                '''
             }
         }
     }
