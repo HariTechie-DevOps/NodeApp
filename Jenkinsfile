@@ -29,54 +29,6 @@ pipeline {
                         }
                     }
                 }
-
-                stage('FEATURE') {
-                    when {
-                        branch 'feature/test'
-                    }
-                    agent { label 'feat' }
-
-                    stages {
-                        stage('Build Image') {
-                            steps {
-                                sh 'docker build -t nodeapp:feat .'
-                            }
-                        }
-
-                        stage('Run Container') {
-                            steps {
-                                sh '''
-                                docker rm -f nodeapp-feat || true
-                                docker run -d -p 3002:3000 --name nodeapp-feat nodeapp:feat
-                                '''
-                            }
-                        }
-                    }
-                }
-
-                stage('MAIN') {
-                    when {
-                        branch 'main'
-                    }
-                    agent label { 'dev' }
-
-                    stages {
-                        stage('Build Image') {
-                            steps {
-                                sh 'docker build -t nodeapp:main .'
-                            }
-                        }
-
-                        stage('Run Container') {
-                            steps {
-                                sh '''
-                                docker rm -f nodeapp-main || true
-                                docker run -d -p 3000:3000 --name nodeapp-main nodeapp:main
-                                '''
-                            }
-                        }
-                    }
-                }
             }
         }
     }
