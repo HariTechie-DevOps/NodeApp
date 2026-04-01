@@ -10,7 +10,7 @@ pipeline {
                     when {
                         branch 'dev'
                     }
-                    agent { label 'dev' }
+                    agent any
 
                     stages {
                         stage('Build Image') {
