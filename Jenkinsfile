@@ -58,7 +58,7 @@ pipeline {
                     when {
                         branch 'main'
                     }
-                    agent any
+                    agent label { 'dev' }
 
                     stages {
                         stage('Build Image') {
